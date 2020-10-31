@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import AddBookDialog from "@/Components/book-add";
-import BookAdd from "@/Components/book-add";
+import AddBookDialog from "@/Components/book/book-add";
+import BookAdd from "@/Components/book/book-add";
 export default {
   name: 'BookTableToolbar',
   components: {

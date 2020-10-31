@@ -13,12 +13,7 @@
                 MongoDB w akcji
               </v-col>
               <v-col cols="4">
-                <v-chip color="blue" outlined small class="return-chip">
-                  <v-icon left small>
-                    mdi-keyboard-return
-                  </v-icon>
-                  Zwróć
-                </v-chip>
+                <return-chip />
               </v-col>
             </v-row>
           </v-list-item-title>
@@ -27,17 +22,8 @@
       <div class="font-weight-bold ml-6 mb-2">
         Historia
       </div>
-      <v-timeline
-
-          align-top
-          dense
-      >
-        <v-timeline-item
-            v-for="historyRow in history"
-            :key="historyRow.time"
-            :color="historyRow.color"
-            small
-        >
+      <v-timeline align-top dense>
+        <v-timeline-item v-for="historyRow in history" :key="historyRow.time" :color="historyRow.color" small>
           <div>
             <div class="font-weight-normal">
               <strong>{{ historyRow.from }}</strong> @{{ historyRow.time }}
@@ -51,8 +37,12 @@
 </template>
 
 <script>
+import RentChip from "@/Components/chips/rent-chip";
+import ReturnChip from "@/Components/chips/return-chip";
+
 export default {
   name: 'Sidebar',
+  components: {ReturnChip, RentChip},
   props: {
     history: {
       type: Array,
@@ -63,8 +53,4 @@ export default {
 </script>
 
 <style scoped>
-  .return-chip {
-    width: 100%;
-    justify-content: center;
-  }
 </style>

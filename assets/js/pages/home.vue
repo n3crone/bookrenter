@@ -3,7 +3,7 @@
     <v-container data-app>
       <v-row>
         <v-col offset-xl="1" xl="3" lg="4" md="12">
-          <sidebar :history="messages"/>
+          <sidebar :history="history"/>
         </v-col>
         <v-col xl="7" lg="8" md="12">
           <book-table :books="books"/>
@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import BookTable from "@/Components/book-table";
-import Sidebar from "@/Components/sidebar";
+import BookTable from "@/Components/book/book-table";
+import Sidebar from "@/Components/sidebar/sidebar";
 
 export default {
   name: 'Home',
@@ -25,17 +25,20 @@ export default {
   },
   data() {
     return {
+      user: {
+        name: 'Jan Kowalski'
+      },
       books: [
         {
           name: 'Wzorce projektowe',
-          owner: 'Ja',
+          owner: 'Jan Kowalski',
           renter: 'Jan Kowalski',
           rentDate: '30-10-2020',
         },
         {
           name: 'Docker',
           owner: 'Tech',
-          renter: 'Ja',
+          renter: 'Jan Kowalski',
           rentDate: '30-10-2020',
         },
         {
@@ -46,14 +49,14 @@ export default {
         },
         {
           name: 'MongoDB w akcji',
-          owner: 'Ja',
+          owner: 'Jan Kowalski',
           renter: null,
           rentDate: null,
         },
         {
           name: 'Bezpieczeństwo aplikacji mobilnych podręcznik hakera',
           owner: 'Tech',
-          renter: 'Ja',
+          renter: 'Jan Kowalski',
           rentDate: '30-10-2020',
         },
         {
@@ -75,7 +78,7 @@ export default {
           rentDate: null,
         },
       ],
-      messages: [
+      history: [
         {
           from: 'Zwrot',
           message: `Sure, I'll see you later.`,
