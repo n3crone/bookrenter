@@ -1,10 +1,13 @@
 {
     "devDependencies": {
+        "@mdi/font": "^5.8.55",
         "@symfony/webpack-encore": "^0.30.0",
         "core-js": "^3.0.0",
+        "deepmerge": "^4.2.2",
         "node-sass": "^4.14.1",
         "regenerator-runtime": "^0.13.2",
-        "sass-loader": "8.0.0",
+        "sass": "^1.28.0",
+        "sass-loader": "^10.0.4",
         "vue": "^2.5.17",
         "vue-loader": "15",
         "vue-template-compiler": "^2.5.17",
@@ -13,9 +16,12 @@
     "license": "UNLICENSED",
     "private": true,
     "scripts": {
-        "dev-server": "encore dev-server",
+        "dev-server": "encore dev-server --https --pfx=%UserProfile%\\.symfony\\certs\\default.p12 --hot --port 8008",
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "vuetify": "^2.3.16"
     }
 }
