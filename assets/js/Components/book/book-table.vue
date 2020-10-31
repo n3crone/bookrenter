@@ -97,32 +97,18 @@ export default {
 
       switch (this.confirmAction) {
         case this.ACTIONS.RENT:
-          this.rent();
+          this.$emit('rent', this.editedIndex);
           return;
         case this.ACTIONS.RETURN:
-          this.return();
+          this.$emit('return', this.editedIndex);
           return;
         case this.ACTIONS.DELETE:
-          this.delete();
+          this.$emit('delete', this.editedIndex);
           return;
         case this.ACTIONS.RESERVE:
-          this.reserve();
+          this.$emit('reserve', this.editedIndex);
           return;
       }
-    },
-    rent() {
-      this.books[this.editedIndex].renter = 'Jan Kowalski';
-      this.books[this.editedIndex].rentDate = '31-10-2020';
-    },
-    delete() {
-      this.books.splice(this.editedIndex, 1)
-    },
-    return() {
-      this.books[this.editedIndex].renter = null;
-      this.books[this.editedIndex].rentDate = null;
-    },
-    reserve() {
-      this.books[this.editedIndex].renter = 'Reserve';
     },
   }
 }

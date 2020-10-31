@@ -6,7 +6,7 @@
           <sidebar :history="history"/>
         </v-col>
         <v-col xl="7" lg="8" md="12">
-          <book-table :books="books"/>
+          <book-table :books="books" @rent="rentBook" @return="returnBook" @delete="deleteBook" @reserve="reserveBook"/>
         </v-col>
       </v-row>
     </v-container>
@@ -22,6 +22,22 @@ export default {
   components: {
     Sidebar,
     BookTable
+  },
+  methods: {
+    rentBook(editedIndex) {
+      this.books[editedIndex].renter = 'Jan Kowalski';
+      this.books[editedIndex].rentDate = '31-10-2020';
+    },
+    deleteBook(editedIndex) {
+      this.books.splice(editedIndex, 1)
+    },
+    returnBook(editedIndex) {
+      this.books[editedIndex].renter = null;
+      this.books[editedIndex].rentDate = null;
+    },
+    reserveBook(editedIndex) {
+      this.books[editedIndex].renter = 'Reserve';
+    },
   },
   data() {
     return {
