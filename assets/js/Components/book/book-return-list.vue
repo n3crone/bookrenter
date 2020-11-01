@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import ReturnChip from "@/Components/chips/return-chip";
-import {ACTIONS} from "@/variables";
+import ReturnChip from '@/Components/chips/return-chip';
+import {ACTIONS} from '@/variables';
 
 export default {
   name: 'BookReturnList',
@@ -21,14 +21,14 @@ export default {
   props: {
     books: {
       required: true,
-    }
+    },
   },
   methods: {
     emitReturn(item) {
       this.$emit('return', item, ACTIONS.RETURN);
     },
   },
-}
+};
 </script>
 
 <style scoped>

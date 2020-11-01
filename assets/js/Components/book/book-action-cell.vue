@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import DeleteChip from "@/Components/chips/delete-chip";
-import ReturnChip from "@/Components/chips/return-chip";
-import ReserveChip from "@/Components/chips/reserve-chip";
-import RentChip from "@/Components/chips/rent-chip";
-import {ACTIONS} from "@/variables";
+import DeleteChip from '@/Components/chips/delete-chip';
+import ReturnChip from '@/Components/chips/return-chip';
+import ReserveChip from '@/Components/chips/reserve-chip';
+import RentChip from '@/Components/chips/rent-chip';
+import {ACTIONS} from '@/variables';
 
 export default {
   name: 'BookActionCell',
@@ -20,7 +20,7 @@ export default {
     RentChip,
     ReserveChip,
     ReturnChip,
-    DeleteChip
+    DeleteChip,
   },
   props: {
     item: {
@@ -41,7 +41,7 @@ export default {
       this.$emit(ACTIONS.RENT, true);
     },
   },
-}
+};
 </script>
 
 <style scoped>

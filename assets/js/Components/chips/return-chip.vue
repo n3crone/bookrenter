@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import CustomChip from "@/Components/chips/custom-chip";
+import CustomChip from '@/Components/chips/custom-chip';
 
 export default {
   name: 'ReturnChip',
@@ -13,7 +13,7 @@ export default {
       this.$emit('click', true);
     },
   },
-}
+};
 </script>
 
 <style scoped>

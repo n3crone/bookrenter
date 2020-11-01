@@ -21,14 +21,14 @@ export default {
     },
     icon: {
       type: String,
-    }
+    },
   },
   methods: {
     click() {
       this.$emit('click', true);
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

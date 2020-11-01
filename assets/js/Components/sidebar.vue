@@ -17,15 +17,16 @@
 </template>
 
 <script>
-import RentChip from "@/Components/chips/rent-chip";
-import ReturnChip from "@/Components/chips/return-chip";
-import BookReturnList from "@/Components/book/book-return-list";
-import {ACTIONS} from "@/variables";
-import HistoryTimeline from "@/Components/history-timeline";
+import BookReturnList from '@/Components/book/book-return-list';
+import {ACTIONS} from '@/variables';
+import HistoryTimeline from '@/Components/history-timeline';
 
 export default {
   name: 'Sidebar',
-  components: {HistoryTimeline, BookReturnList, ReturnChip, RentChip},
+  components: {
+    HistoryTimeline,
+    BookReturnList,
+  },
   props: {
     history: {
       type: Array,
@@ -45,7 +46,7 @@ export default {
       this.$emit(ACTIONS.RETURN, ...args);
     },
   },
-}
+};
 </script>
 
 <style scoped>

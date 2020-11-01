@@ -23,7 +23,7 @@ export default {
     text: {
       required: true,
       type: String,
-    }
+    },
   },
 
   methods: {
@@ -34,8 +34,8 @@ export default {
     confirm() {
       this.$emit('confirm', true);
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

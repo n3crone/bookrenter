@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn color="teal" dark class="mb-2" v-bind="attrs" v-on="on" outlined small>
+      <v-btn color="teal" class="mb-2" v-bind="attrs" v-on="on" outlined small>
         <v-icon small>
           mdi-book-outline
         </v-icon>
@@ -58,23 +58,23 @@ export default {
   }),
   watch: {
     dialog(val) {
-      val || this.close()
+      val || this.close();
     },
   },
   methods: {
     close() {
-      this.dialog = false
+      this.dialog = false;
       this.$nextTick(() => {
-        this.newBook = Object.assign({}, this.newBook)
-        this.editedIndex = -1
-      })
+        this.newBook = Object.assign({}, this.newBook);
+        this.editedIndex = -1;
+      });
     },
     save() {
       this.books.push(this.newBook);
-      this.close()
+      this.close();
     },
   },
-}
+};
 </script>
 
 <style scoped>

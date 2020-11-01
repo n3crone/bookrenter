@@ -1,14 +1,22 @@
 <template>
   <v-app>
     <v-container data-app>
-      <confirm-dialog :show-dialog="confirmDialog" @confirm="confirm" :text="dialogText"/>
+      <confirm-dialog
+          :show-dialog="confirmDialog"
+          :text="dialogText"
+          @confirm="confirm"
+      />
       <v-row>
         <v-col offset-xl="1" xl="3" lg="4" md="12">
-          <sidebar :history="history" :books="books.filter((book) => book.renter === 'Jan Kowalski')"
+          <sidebar :history="history"
+                   :books="books.filter((book) => book.renter === 'Jan Kowalski')"
                    @return="showDialog" :user="user"/>
         </v-col>
         <v-col xl="7" lg="8" md="12">
-          <book-table :books="books" @rent="showDialog" @return="showDialog" @delete="showDialog"
+          <book-table :books="books"
+                      @rent="showDialog"
+                      @return="showDialog"
+                      @delete="showDialog"
                       @reserve="showDialog"/>
         </v-col>
       </v-row>
@@ -17,17 +25,17 @@
 </template>
 
 <script>
-import BookTable from "@/Components/book/book-table";
-import Sidebar from "@/Components/sidebar";
-import ConfirmDialog from "@/Components/confirm-dialog";
-import {ACTIONS} from "@/variables";
+import BookTable from '@/Components/book/book-table';
+import Sidebar from '@/Components/sidebar';
+import ConfirmDialog from '@/Components/confirm-dialog';
+import {ACTIONS} from '@/variables';
 
 export default {
   name: 'Home',
   components: {
     ConfirmDialog,
     Sidebar,
-    BookTable
+    BookTable,
   },
   methods: {
     showDialog(item, action) {
@@ -44,16 +52,16 @@ export default {
 
       switch (this.confirmAction) {
         case ACTIONS.RENT:
-          this.rentBook()
+          this.rentBook();
           return;
         case ACTIONS.RETURN:
-          this.returnBook()
+          this.returnBook();
           return;
         case ACTIONS.DELETE:
-          this.deleteBook()
+          this.deleteBook();
           return;
         case ACTIONS.RESERVE:
-          this.reserveBook()
+          this.reserveBook();
           return;
       }
     },
@@ -63,7 +71,7 @@ export default {
       this.pushToHistory(ACTIONS.RENT);
     },
     deleteBook() {
-      this.books.splice(this.editedIndex, 1)
+      this.books.splice(this.editedIndex, 1);
       this.pushToHistory(ACTIONS.DELETE);
     },
     returnBook() {
@@ -100,7 +108,7 @@ export default {
       confirmDialog: false,
       dialogText: null,
       user: {
-        name: 'Jan Kowalski'
+        name: 'Jan Kowalski',
       },
       books: [
         {
@@ -179,9 +187,9 @@ export default {
           date: '20-09-2020',
         },
       ],
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped>

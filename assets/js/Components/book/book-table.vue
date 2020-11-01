@@ -1,31 +1,39 @@
 <template>
-  <v-data-table dense :headers="headers" :items="books" :items-per-page="15" class="elevation-1">
+  <v-data-table :headers="headers"
+                :items="books"
+                :items-per-page="15"
+                class="elevation-1"
+                dense
+  >
     <template v-slot:top>
       <book-table-toolbar :books="books"/>
     </template>
-    <template v-slot:item.renter="{ item }">
+    <template v-slot:[`item.renter`]="{ item }">
       <book-renter-cell :item="item"/>
     </template>
-    <template v-slot:item.action="{ item }">
-      <book-action-cell :item="item" @delete="emitDelete(item)" @return="emitReturn(item)"
-                        @reserve="emitReserve(item)" @rent="emitRent(item)"
+    <template v-slot:[`item.action`]="{ item }">
+      <book-action-cell :item="item"
+                        @delete="emitDelete(item)"
+                        @return="emitReturn(item)"
+                        @reserve="emitReserve(item)"
+                        @rent="emitRent(item)"
       />
     </template>
   </v-data-table>
 </template>
 
 <script>
-import BookTableToolbar from "@/Components/book/book-table-toolbar";
-import BookRenterCell from "@/Components/book/book-renter-cell";
-import BookActionCell from "@/Components/book/book-action-cell";
-import {ACTIONS} from "@/variables";
+import BookTableToolbar from '@/Components/book/book-table-toolbar';
+import BookRenterCell from '@/Components/book/book-renter-cell';
+import BookActionCell from '@/Components/book/book-action-cell';
+import {ACTIONS} from '@/variables';
 
 export default {
   name: 'BookTable',
   components: {
     BookActionCell,
     BookRenterCell,
-    BookTableToolbar
+    BookTableToolbar,
   },
   props: {
     books: {
@@ -39,7 +47,7 @@ export default {
         {
           text: 'Tytuł',
           align: 'start',
-          value: 'name'
+          value: 'name',
         },
         {
           text: 'Właściciel',
@@ -57,7 +65,7 @@ export default {
           sortable: false,
         },
       ],
-    }
+    };
   },
   methods: {
     emitRent(item) {
@@ -72,8 +80,8 @@ export default {
     emitReserve(item) {
       this.$emit(ACTIONS.RESERVE, item, ACTIONS.RESERVE);
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

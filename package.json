@@ -4,6 +4,9 @@
         "@symfony/webpack-encore": "^0.30.0",
         "core-js": "^3.0.0",
         "deepmerge": "^4.2.2",
+        "eslint": "^7.12.1",
+        "eslint-config-google": "^0.14.0",
+        "eslint-plugin-vue": "^7.1.0",
         "node-sass": "^4.14.1",
         "regenerator-runtime": "^0.13.2",
         "sass": "^1.28.0",
@@ -13,7 +16,7 @@
         "vue-template-compiler": "^2.5.17",
         "webpack-notifier": "^1.6.0"
     },
-    "license": "UNLICENSED",
+    "liense": "UNLICENSED",
     "private": true,
     "scripts": {
         "dev-server": "encore dev-server --https --pfx=%UserProfile%\\.symfony\\certs\\default.p12 --hot --port 8008",

@@ -16,9 +16,9 @@ export default {
   props: {
     item: {
       required: true,
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import {ACTIONS} from "@/variables";
+import {ACTIONS} from '@/variables';
 
 export default {
   name: 'HistoryTimeline',
@@ -20,7 +20,7 @@ export default {
     history: {
       type: Array,
       required: true,
-    }
+    },
   },
   methods: {
     typeToColor(type) {
@@ -54,7 +54,7 @@ export default {
       }
     },
   },
-}
+};
 </script>
 
 <style scoped>
