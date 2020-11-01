@@ -2,24 +2,9 @@
   <v-card>
     <v-card-text>
       <v-card-title>Jan Kowalski</v-card-title>
-      <div class="text-center">Wypożyczenia</div>
-      <v-progress-linear value="33"/>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title>
-            <v-row>
-              <v-col cols="8">
-                <v-icon small color="teal">mdi-check</v-icon>
-                MongoDB w akcji
-              </v-col>
-              <v-col cols="4">
-                <return-chip />
-              </v-col>
-            </v-row>
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-      <div class="font-weight-bold ml-6 mb-2">
+      <div class="pl-4">Wypożyczenia</div>
+      <book-return-list :books="books" @return="emitReturn"/>
+      <div class="font-weight-bold ml-6 mb-2 mt-4">
         Historia
       </div>
       <v-timeline align-top dense>
@@ -39,14 +24,24 @@
 <script>
 import RentChip from "@/Components/chips/rent-chip";
 import ReturnChip from "@/Components/chips/return-chip";
+import BookReturnList from "@/Components/book/book-return-list";
 
 export default {
   name: 'Sidebar',
-  components: {ReturnChip, RentChip},
+  components: {BookReturnList, ReturnChip, RentChip},
   props: {
     history: {
       type: Array,
       required: true,
+    },
+    books: {
+      type: Array,
+      required: true,
+    },
+  },
+  methods: {
+    emitReturn(...args) {
+      this.$emit('return', ...args);
     },
   },
 }

@@ -32,8 +32,4 @@ export default {
 </script>
 
 <style scoped>
-.v-chip {
-  width: 100px;
-  justify-content: center;
-}
 </style>

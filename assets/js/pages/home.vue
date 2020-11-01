@@ -1,12 +1,13 @@
 <template>
   <v-app>
     <v-container data-app>
+      <confirm-dialog :show-dialog="confirmDialog" @confirm="confirm" :text="dialogText"/>
       <v-row>
         <v-col offset-xl="1" xl="3" lg="4" md="12">
-          <sidebar :history="history"/>
+          <sidebar :history="history" :books="books.filter((book) => book.renter === 'Jan Kowalski')" @return="showDialog"/>
         </v-col>
         <v-col xl="7" lg="8" md="12">
-          <book-table :books="books" @rent="rentBook" @return="returnBook" @delete="deleteBook" @reserve="reserveBook"/>
+          <book-table :books="books" @rent="showDialog" @return="showDialog" @delete="showDialog" @reserve="showDialog"/>
         </v-col>
       </v-row>
     </v-container>
@@ -16,31 +17,64 @@
 <script>
 import BookTable from "@/Components/book/book-table";
 import Sidebar from "@/Components/sidebar/sidebar";
+import ConfirmDialog from "@/Components/confirm-dialog";
+import {ACTIONS} from "@/variables";
 
 export default {
   name: 'Home',
   components: {
+    ConfirmDialog,
     Sidebar,
     BookTable
   },
   methods: {
-    rentBook(editedIndex) {
-      this.books[editedIndex].renter = 'Jan Kowalski';
-      this.books[editedIndex].rentDate = '31-10-2020';
+    showDialog(item, action) {
+      this.dialogText = `📚 Chcesz ${action} '${item.name}'?`;
+      this.editedIndex = this.books.indexOf(item);
+      this.confirmDialog = true;
+      this.confirmAction = action;
     },
-    deleteBook(editedIndex) {
-      this.books.splice(editedIndex, 1)
+    confirm(confirm) {
+      this.confirmDialog = false;
+      if (!confirm) {
+        return;
+      }
+
+      console.log(this.confirmAction);
+      switch (this.confirmAction) {
+        case ACTIONS.RENT:
+          this.rentBook()
+          return;
+        case ACTIONS.RETURN:
+          this.returnBook()
+          return;
+        case ACTIONS.DELETE:
+          this.deleteBook()
+          return;
+        case ACTIONS.RESERVE:
+          this.reserveBook()
+          return;
+      }
     },
-    returnBook(editedIndex) {
-      this.books[editedIndex].renter = null;
-      this.books[editedIndex].rentDate = null;
+    rentBook() {
+      this.books[this.editedIndex].renter = 'Jan Kowalski';
+      this.books[this.editedIndex].rentDate = '31-10-2020';
     },
-    reserveBook(editedIndex) {
-      this.books[editedIndex].renter = 'Reserve';
+    deleteBook() {
+      this.books.splice(this.editedIndex, 1)
+    },
+    returnBook() {
+      this.books[this.editedIndex].renter = null;
+      this.books[this.editedIndex].rentDate = null;
+    },
+    reserveBook() {
+      this.books[this.editedIndex].renter = 'Reserve';
     },
   },
   data() {
     return {
+      confirmDialog: false,
+      dialogText: null,
       user: {
         name: 'Jan Kowalski'
       },

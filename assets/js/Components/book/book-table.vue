@@ -2,14 +2,13 @@
   <v-data-table dense :headers="headers" :items="books" :items-per-page="15" class="elevation-1">
     <template v-slot:top>
       <book-table-toolbar :books="books"/>
-      <confirm-dialog :show-dialog="confirmDialog" @confirm="confirm" :text="dialogText"/>
     </template>
     <template v-slot:item.renter="{ item }">
       <book-renter-cell :item="item"/>
     </template>
     <template v-slot:item.action="{ item }">
-      <book-action-cell :item="item" @delete="deleteDialog(item)" @return="returnDialog(item)"
-                        @reserve="reserveDialog(item)" @rent="rentDialog(item)"
+      <book-action-cell :item="item" @delete="emitDelete(item)" @return="emitReturn(item)"
+                        @reserve="emitReserve(item)" @rent="emitRent(item)"
       />
     </template>
   </v-data-table>
@@ -17,16 +16,15 @@
 
 <script>
 import BookTableToolbar from "@/Components/book/book-table-toolbar";
-import ConfirmDialog from "@/Components/confirm-dialog";
 import BookRenterCell from "@/Components/book/book-renter-cell";
 import BookActionCell from "@/Components/book/book-action-cell";
+import {ACTIONS} from "@/variables";
 
 export default {
   name: 'BookTable',
   components: {
     BookActionCell,
     BookRenterCell,
-    ConfirmDialog,
     BookTableToolbar
   },
   props: {
@@ -37,9 +35,6 @@ export default {
   },
   data() {
     return {
-      confirmDialog: false,
-      dialogText: '',
-      editedIndex: -1,
       headers: [
         {
           text: 'Tytuł',
@@ -62,53 +57,20 @@ export default {
           sortable: false,
         },
       ],
-      ACTIONS: {
-        RENT: 'RENT',
-        DELETE: 'DELETE',
-        RETURN: 'RETURN',
-        RESERVE: 'RESERVE',
-      },
     }
   },
   methods: {
-    rentDialog(item) {
-      this.showDialog(`📚 Chcesz wypożyczyć '${item.name}'?`, item, this.ACTIONS.RENT);
+    emitRent(item) {
+      this.$emit('rent', item, ACTIONS.RENT);
     },
-    deleteDialog(item) {
-      this.showDialog(`📚 Chcesz usunąć '${item.name}'?`, item, this.ACTIONS.DELETE);
+    emitDelete(item) {
+      this.$emit('delete', item, ACTIONS.DELETE);
     },
-    returnDialog(item) {
-      this.showDialog(`📚 Chcesz zwrócić '${item.name}'?`, item, this.ACTIONS.RETURN);
+    emitReturn(item) {
+      this.$emit('return', item, ACTIONS.RETURN);
     },
-    reserveDialog(item) {
-      this.showDialog(`📚 Chcesz zarezerwować '${item.name}'?`, item, this.ACTIONS.RESERVE);
-    },
-    showDialog(text, item, action) {
-      this.dialogText = text;
-      this.editedIndex = this.books.indexOf(item);
-      this.confirmDialog = true;
-      this.confirmAction = action;
-    },
-    confirm(confirm) {
-      this.confirmDialog = false;
-      if (!confirm) {
-        return;
-      }
-
-      switch (this.confirmAction) {
-        case this.ACTIONS.RENT:
-          this.$emit('rent', this.editedIndex);
-          return;
-        case this.ACTIONS.RETURN:
-          this.$emit('return', this.editedIndex);
-          return;
-        case this.ACTIONS.DELETE:
-          this.$emit('delete', this.editedIndex);
-          return;
-        case this.ACTIONS.RESERVE:
-          this.$emit('reserve', this.editedIndex);
-          return;
-      }
+    emitReserve(item) {
+      this.$emit('reserve', item, ACTIONS.RESERVE);
     },
   }
 }
