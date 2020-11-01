@@ -1,19 +1,16 @@
 <template>
   <v-app>
     <v-container data-app>
-      <confirm-dialog
-          :show-dialog="confirmDialog"
-          :text="dialogText"
-          @confirm="confirm"
-      />
+      <confirm-dialog :show-dialog="confirmDialog" :text="dialogText" @confirm="confirm"/>
+      <book-add-dialog :show-dialog="addDialog" @confirm="confirm"/>
       <v-row>
         <v-col offset-xl="1" xl="3" lg="4" md="12">
           <sidebar :history="history"
                    :books="books.filter((book) => book.renter === 'Jan Kowalski')"
-                   @return="showDialog" :user="user"/>
+                   @return="showConfirmDialog" :user="user"/>
         </v-col>
         <v-col xl="7" lg="8" md="12">
-          <book-table :books="books" @click="showDialog"/>
+          <book-table :books="books" @confirm-dialog="showConfirmDialog" @add-dialog="showAddDialog"/>
         </v-col>
       </v-row>
     </v-container>
@@ -25,23 +22,30 @@ import BookTable from '@/Components/book/book-table';
 import Sidebar from '@/Components/sidebar';
 import ConfirmDialog from '@/Components/confirm-dialog';
 import {ACTIONS} from '@/variables';
+import BookAddDialog from '@/Components/book/book-add-dialog';
 
 export default {
   name: 'Home',
   components: {
+    BookAddDialog,
     ConfirmDialog,
     Sidebar,
     BookTable,
   },
   methods: {
-    showDialog(item, action) {
+    showConfirmDialog(item, action) {
       this.dialogText = `📚 Chcesz ${this.typeToHumanString(action)} '${item.name}'?`;
       this.editedIndex = this.books.indexOf(item);
       this.confirmDialog = true;
       this.confirmAction = action;
     },
+    showAddDialog() {
+      this.addDialog = true;
+      this.confirmAction = ACTIONS.ADD;
+    },
     confirm(confirm) {
       this.confirmDialog = false;
+      this.addDialog = false;
       if (!confirm) {
         return;
       }
@@ -59,6 +63,9 @@ export default {
         case ACTIONS.RESERVE:
           this.reserveBook();
           return;
+        case ACTIONS.ADD:
+          this.addBook(confirm);
+          return;
       }
     },
     rentBook() {
@@ -67,8 +74,8 @@ export default {
       this.pushToHistory(ACTIONS.RENT);
     },
     deleteBook() {
+      this.pushToHistory(ACTIONS.DELETE, this.books[this.editedIndex].name);
       this.books.splice(this.editedIndex, 1);
-      this.pushToHistory(ACTIONS.DELETE);
     },
     returnBook() {
       this.books[this.editedIndex].renter = null;
@@ -79,10 +86,14 @@ export default {
       this.books[this.editedIndex].renter = 'Reserve';
       this.pushToHistory(ACTIONS.RESERVE);
     },
-    pushToHistory(type) {
+    addBook(book) {
+      this.books.push(book);
+      this.pushToHistory(ACTIONS.ADD, book.name);
+    },
+    pushToHistory(type, bookName = null) {
       this.history.unshift({
         type: type,
-        bookName: this.books[this.editedIndex].name,
+        bookName: bookName ? bookName : this.books[this.editedIndex].name,
         date: '15-12-2020',
       });
     },
@@ -102,7 +113,8 @@ export default {
   data() {
     return {
       confirmDialog: false,
-      dialogText: null,
+      addDialog: false,
+      dialogText: '',
       user: {
         name: 'Jan Kowalski',
       },

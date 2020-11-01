@@ -1,13 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="500px">
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn color="teal" class="mb-2" v-bind="attrs" v-on="on" outlined small>
-        <v-icon small>
-          mdi-book-outline
-        </v-icon>
-        Dodaj
-      </v-btn>
-    </template>
+  <v-dialog v-model="dialog" persistent max-width="500px">
     <v-card>
       <v-card-title>
         <span class="headline">Dodaj książkę</span>
@@ -23,7 +15,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="close">
+        <v-btn color="blue darken-1" text @click="cancel">
           Anuluj
         </v-btn>
         <v-btn color="blue darken-1" text @click="save">
@@ -36,42 +28,44 @@
 
 <script>
 export default {
-  name: 'BookAdd',
+  name: 'BookAddDialog',
   props: {
-    books: {
-      type: Array,
+    showDialog: {
+      type: Boolean,
       required: true,
     },
   },
   data: () => ({
     dialog: false,
     newBook: {
-      name: '',
+      name: null,
       renter: null,
-      owner: 'Afro',
+      owner: 'Jan Kowalski',
     },
     defaultBook: {
-      name: '',
+      name: null,
       renter: null,
-      owner: 'Afro',
+      owner: 'Jan Kowalski',
     },
   }),
   watch: {
-    dialog(val) {
-      val || this.close();
+    showDialog(val) {
+      this.dialog = val;
     },
   },
   methods: {
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        this.newBook = Object.assign({}, this.newBook);
-        this.editedIndex = -1;
-      });
+    cancel() {
+      this.$emit('confirm', false);
+      this.resetBook();
     },
     save() {
-      this.books.push(this.newBook);
-      this.close();
+      this.$emit('confirm', this.newBook);
+      this.resetBook();
+    },
+    resetBook() {
+      this.$nextTick(() => {
+        this.newBook = Object.assign({}, this.defaultBook);
+      });
     },
   },
 };

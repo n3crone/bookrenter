@@ -12,22 +12,28 @@
       </div>
     </div>
     <v-spacer></v-spacer>
-    <book-add :books="books"/>
+    <add-chip @click="addClick"/>
   </v-toolbar>
 </template>
 
 <script>
-import BookAdd from '@/Components/book/book-add';
+import AddChip from '@/Components/chips/add-chip';
+import {ACTIONS} from '@/variables';
 
 export default {
   name: 'BookTableToolbar',
   components: {
-    BookAdd,
+    AddChip,
   },
   props: {
     books: {
       type: Array,
       required: true,
+    },
+  },
+  methods: {
+    addClick() {
+      this.$emit(ACTIONS.ADD, true);
     },
   },
 };

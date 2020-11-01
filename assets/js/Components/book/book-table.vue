@@ -6,7 +6,7 @@
                 dense
   >
     <template v-slot:top>
-      <book-table-toolbar :books="books"/>
+      <book-table-toolbar :books="books" @add="emitAdd"/>
     </template>
     <template v-slot:[`item.renter`]="{ item }">
       <book-renter-cell :item="item"/>
@@ -69,16 +69,19 @@ export default {
   },
   methods: {
     emitRent(item) {
-      this.$emit('click', item, ACTIONS.RENT);
+      this.$emit('confirm-dialog', item, ACTIONS.RENT);
     },
     emitDelete(item) {
-      this.$emit('click', item, ACTIONS.DELETE);
+      this.$emit('confirm-dialog', item, ACTIONS.DELETE);
     },
     emitReturn(item) {
-      this.$emit('click', item, ACTIONS.RETURN);
+      this.$emit('confirm-dialog', item, ACTIONS.RETURN);
     },
     emitReserve(item) {
-      this.$emit('click', item, ACTIONS.RESERVE);
+      this.$emit('confirm-dialog', item, ACTIONS.RESERVE);
+    },
+    emitAdd() {
+      this.$emit('add-dialog', ACTIONS.ADD);
     },
   },
 };
