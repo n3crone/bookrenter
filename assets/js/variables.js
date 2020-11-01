@@ -1,6 +1,7 @@
 export const ACTIONS = {
-    RENT: 'wypożycz',
-    DELETE: 'usuń',
-    RETURN: 'zwróć',
-    RESERVE: 'zarezerwuj',
+    RENT: 'rent',
+    DELETE: 'delete',
+    RETURN: 'return',
+    RESERVE: 'reserve',
+    ADD: 'add',
 };

@@ -4,10 +4,12 @@
       <confirm-dialog :show-dialog="confirmDialog" @confirm="confirm" :text="dialogText"/>
       <v-row>
         <v-col offset-xl="1" xl="3" lg="4" md="12">
-          <sidebar :history="history" :books="books.filter((book) => book.renter === 'Jan Kowalski')" @return="showDialog"/>
+          <sidebar :history="history" :books="books.filter((book) => book.renter === 'Jan Kowalski')"
+                   @return="showDialog" :user="user"/>
         </v-col>
         <v-col xl="7" lg="8" md="12">
-          <book-table :books="books" @rent="showDialog" @return="showDialog" @delete="showDialog" @reserve="showDialog"/>
+          <book-table :books="books" @rent="showDialog" @return="showDialog" @delete="showDialog"
+                      @reserve="showDialog"/>
         </v-col>
       </v-row>
     </v-container>
@@ -16,7 +18,7 @@
 
 <script>
 import BookTable from "@/Components/book/book-table";
-import Sidebar from "@/Components/sidebar/sidebar";
+import Sidebar from "@/Components/sidebar";
 import ConfirmDialog from "@/Components/confirm-dialog";
 import {ACTIONS} from "@/variables";
 
@@ -29,7 +31,7 @@ export default {
   },
   methods: {
     showDialog(item, action) {
-      this.dialogText = `📚 Chcesz ${action} '${item.name}'?`;
+      this.dialogText = `📚 Chcesz ${this.typeToHumanString(action)} '${item.name}'?`;
       this.editedIndex = this.books.indexOf(item);
       this.confirmDialog = true;
       this.confirmAction = action;
@@ -58,20 +60,20 @@ export default {
     rentBook() {
       this.books[this.editedIndex].renter = 'Jan Kowalski';
       this.books[this.editedIndex].rentDate = '31-10-2020';
-      this.pushToHistory('rent');
+      this.pushToHistory(ACTIONS.RENT);
     },
     deleteBook() {
       this.books.splice(this.editedIndex, 1)
-      this.pushToHistory('delete');
+      this.pushToHistory(ACTIONS.DELETE);
     },
     returnBook() {
       this.books[this.editedIndex].renter = null;
       this.books[this.editedIndex].rentDate = null;
-      this.pushToHistory('return');
+      this.pushToHistory(ACTIONS.RETURN);
     },
     reserveBook() {
       this.books[this.editedIndex].renter = 'Reserve';
-      this.pushToHistory('reserve');
+      this.pushToHistory(ACTIONS.RESERVE);
     },
     pushToHistory(type) {
       this.history.unshift({
@@ -79,7 +81,19 @@ export default {
         bookName: this.books[this.editedIndex].name,
         date: '15-12-2020',
       });
-    }
+    },
+    typeToHumanString(type) {
+      switch (type) {
+        case ACTIONS.RETURN:
+          return 'zwrócić';
+        case ACTIONS.DELETE:
+          return 'usunąć';
+        case ACTIONS.RESERVE:
+          return 'zarezerować';
+        case ACTIONS.RENT:
+          return 'wypożyczyć';
+      }
+    },
   },
   data() {
     return {
@@ -140,27 +154,27 @@ export default {
       ],
       history: [
         {
-          type: 'delete',
+          type: ACTIONS.DELETE,
           bookName: 'Testowanie kodu w praktyce',
           date: '11-11-2020',
         },
         {
-          type: 'return',
+          type: ACTIONS.RETURN,
           bookName: `Cisza w sieci`,
           date: '31-10-2020',
         },
         {
-          type: 'reserve',
+          type: ACTIONS.RESERVE,
           bookName: `Czysta architektura.`,
           date: '31-09-2020',
         },
         {
-          type: 'rent',
+          type: ACTIONS.RENT,
           bookName: 'Cisza w sieci',
           date: '27-09-2020',
         },
         {
-          type: 'add',
+          type: ACTIONS.ADD,
           bookName: 'Testowanie kodu w praktyce',
           date: '20-09-2020',
         },

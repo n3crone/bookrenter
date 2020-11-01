@@ -12,6 +12,7 @@ import DeleteChip from "@/Components/chips/delete-chip";
 import ReturnChip from "@/Components/chips/return-chip";
 import ReserveChip from "@/Components/chips/reserve-chip";
 import RentChip from "@/Components/chips/rent-chip";
+import {ACTIONS} from "@/variables";
 
 export default {
   name: 'BookActionCell',
@@ -28,16 +29,16 @@ export default {
   },
   methods: {
     deleteClick() {
-      this.$emit('delete', true);
+      this.$emit(ACTIONS.RENT, true);
     },
     returnClick() {
-      this.$emit('return', true);
+      this.$emit(ACTIONS.RETURN, true);
     },
     reserveClick() {
-      this.$emit('reserve', true);
+      this.$emit(ACTIONS.RESERVE, true);
     },
     rentClick() {
-      this.$emit('rent', true);
+      this.$emit(ACTIONS.RENT, true);
     },
   },
 }

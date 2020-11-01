@@ -61,16 +61,16 @@ export default {
   },
   methods: {
     emitRent(item) {
-      this.$emit('rent', item, ACTIONS.RENT);
+      this.$emit(ACTIONS.RENT, item, ACTIONS.RENT);
     },
     emitDelete(item) {
-      this.$emit('delete', item, ACTIONS.DELETE);
+      this.$emit(ACTIONS.DELETE, item, ACTIONS.DELETE);
     },
     emitReturn(item) {
-      this.$emit('return', item, ACTIONS.RETURN);
+      this.$emit(ACTIONS.RETURN, item, ACTIONS.RETURN);
     },
     emitReserve(item) {
-      this.$emit('reserve', item, ACTIONS.RESERVE);
+      this.$emit(ACTIONS.RESERVE, item, ACTIONS.RESERVE);
     },
   }
 }
