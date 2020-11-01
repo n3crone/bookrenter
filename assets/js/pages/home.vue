@@ -13,11 +13,7 @@
                    @return="showDialog" :user="user"/>
         </v-col>
         <v-col xl="7" lg="8" md="12">
-          <book-table :books="books"
-                      @rent="showDialog"
-                      @return="showDialog"
-                      @delete="showDialog"
-                      @reserve="showDialog"/>
+          <book-table :books="books" @click="showDialog"/>
         </v-col>
       </v-row>
     </v-container>

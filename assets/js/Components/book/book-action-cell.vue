@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     deleteClick() {
-      this.$emit(ACTIONS.RENT, true);
+      this.$emit(ACTIONS.DELETE, true);
     },
     returnClick() {
       this.$emit(ACTIONS.RETURN, true);
