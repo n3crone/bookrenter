@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="showDialog" persistent max-width="500px">
+  <v-dialog v-model="dialog" persistent max-width="500px">
     <v-card>
       <v-card-title class="headline justify-center">{{ text }}</v-card-title>
       <v-card-actions>
@@ -25,7 +25,16 @@ export default {
       type: String,
     },
   },
-
+  data() {
+    return {
+      dialog: false,
+    };
+  },
+  watch: {
+    showDialog(val) {
+      this.dialog = val;
+    },
+  },
   methods: {
     cancel() {
       this.$emit('confirm', false);
