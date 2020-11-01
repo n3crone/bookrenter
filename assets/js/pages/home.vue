@@ -40,7 +40,6 @@ export default {
         return;
       }
 
-      console.log(this.confirmAction);
       switch (this.confirmAction) {
         case ACTIONS.RENT:
           this.rentBook()
@@ -59,17 +58,28 @@ export default {
     rentBook() {
       this.books[this.editedIndex].renter = 'Jan Kowalski';
       this.books[this.editedIndex].rentDate = '31-10-2020';
+      this.pushToHistory('rent');
     },
     deleteBook() {
       this.books.splice(this.editedIndex, 1)
+      this.pushToHistory('delete');
     },
     returnBook() {
       this.books[this.editedIndex].renter = null;
       this.books[this.editedIndex].rentDate = null;
+      this.pushToHistory('return');
     },
     reserveBook() {
       this.books[this.editedIndex].renter = 'Reserve';
+      this.pushToHistory('reserve');
     },
+    pushToHistory(type) {
+      this.history.unshift({
+        type: type,
+        bookName: this.books[this.editedIndex].name,
+        date: '15-12-2020',
+      });
+    }
   },
   data() {
     return {
@@ -130,46 +140,29 @@ export default {
       ],
       history: [
         {
-          from: 'Zwrot',
-          message: `Sure, I'll see you later.`,
-          time: '10:42am',
-          color: 'orange',
+          type: 'delete',
+          bookName: 'Testowanie kodu w praktyce',
+          date: '11-11-2020',
         },
         {
-          from: 'Wypożyczenie',
-          message: 'Yeah, sure. Does 1:00pm work?',
-          time: '10:37am',
-          color: 'teal',
+          type: 'return',
+          bookName: `Cisza w sieci`,
+          date: '31-10-2020',
         },
         {
-          from: 'Zwrot',
-          message: 'Did you still want to grab lunch today?',
-          time: '9:57am',
-          color: 'orange',
+          type: 'reserve',
+          bookName: `Czysta architektura.`,
+          date: '31-09-2020',
         },
         {
-          from: 'Zwrot',
-          message: 'Did you still want to grab lunch today?',
-          time: '9:11am',
-          color: 'red',
+          type: 'rent',
+          bookName: 'Cisza w sieci',
+          date: '27-09-2020',
         },
         {
-          from: 'Zwrot',
-          message: 'Did you still want to grab lunch today?',
-          time: '9:12am',
-          color: 'blue',
-        },
-        {
-          from: 'Zwrot',
-          message: 'Did you still want to grab lunch today?',
-          time: '19:47am',
-          color: 'orange',
-        },
-        {
-          from: 'Zwrot',
-          message: 'Did you still want to grab lunch today?',
-          time: '9:47am',
-          color: 'orange',
+          type: 'add',
+          bookName: 'Testowanie kodu w praktyce',
+          date: '20-09-2020',
         },
       ],
     }

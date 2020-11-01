@@ -8,12 +8,12 @@
         Historia
       </div>
       <v-timeline align-top dense>
-        <v-timeline-item v-for="historyRow in history" :key="historyRow.time" :color="historyRow.color" small>
+        <v-timeline-item v-for="historyRow in history" :key="historyRow.time" :color="typeToColor(historyRow.type)" small>
           <div>
             <div class="font-weight-normal">
-              <strong>{{ historyRow.from }}</strong> @{{ historyRow.time }}
+              <strong>{{ historyRow.type|typeToHumanString }}</strong> @{{ historyRow.date }}
             </div>
-            <div>{{ historyRow.message }}</div>
+            <div>{{ historyRow.bookName }}</div>
           </div>
         </v-timeline-item>
       </v-timeline>
@@ -42,6 +42,36 @@ export default {
   methods: {
     emitReturn(...args) {
       this.$emit('return', ...args);
+    },
+    typeToColor(type) {
+      switch (type) {
+        case 'add':
+          return 'teal';
+        case 'return':
+          return 'blue';
+        case 'delete':
+          return 'red darken-3';
+        case 'reserve':
+          return 'blue-grey';
+        case 'rent':
+          return 'green';
+      }
+    },
+  },
+  filters: {
+    typeToHumanString(type) {
+      switch (type) {
+        case 'add':
+          return 'Dodano';
+        case 'return':
+          return 'Zwrot';
+        case 'delete':
+          return 'Usunięto';
+        case 'reserve':
+          return 'Zarezerwowano';
+        case 'rent':
+          return 'Wypożyczono';
+      }
     },
   },
 }
