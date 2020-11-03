@@ -1,7 +1,10 @@
 <template>
   <div>
-    <delete-chip v-if="item.owner === 'Jan Kowalski'" @click="deleteClick"/>
-    <return-chip v-if="item.renter === 'Jan Kowalski'" @click="returnClick"/>
+    <delete-chip v-if="item.owner.id === user.id && !item.renter" @click="deleteClick"/>
+    <return-chip v-if="item.renter && item.renter.id === user.id" @click="returnClick"/>
+    <v-chip v-else-if="item.status === 'Reserve'"  color="black" outlined small>
+      Zarezerwowana
+    </v-chip>
     <reserve-chip v-else-if="item.renter" @click="reserveClick"/>
     <rent-chip v-else @click="rentClick"/>
   </div>
@@ -26,6 +29,9 @@ export default {
     item: {
       required: true,
     },
+    user: {
+      required: true,
+    },
   },
   methods: {
     deleteClick() {
@@ -46,7 +52,7 @@ export default {
 
 <style scoped>
 .v-chip {
-  width: 100px;
+  width: 110px;
   justify-content: center;
 }
 </style>

@@ -4,20 +4,26 @@
       <v-card-title>
         {{ user.name }}
       </v-card-title>
-      <div class="pl-4">
+      <div class="pl-4" v-if="books.length">
         Wypożyczenia
       </div>
-      <book-return-list :books="books" @return="emitReturn"/>
-      <div class="font-weight-bold ml-6 mb-2 mt-4">
-        Historia
+      <book-list :books="books" action="return" @return="emitReturn"/>
+      <div class="pl-4" v-if="userBooks.length">
+        Twoje książki
       </div>
-      <history-timeline :history="history"/>
+      <book-list :books="userBooks" action="delete" @return="emitReturn"/>
+      <div v-if="history.length">
+        <div class="font-weight-bold ml-6 mb-2 mt-4">
+          Historia
+        </div>
+        <history-timeline :history="history"/>
+      </div>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
-import BookReturnList from '@/Components/book/book-return-list';
+import BookList from '@/Components/book/book-list';
 import {ACTIONS} from '@/variables';
 import HistoryTimeline from '@/Components/history-timeline';
 
@@ -25,7 +31,7 @@ export default {
   name: 'Sidebar',
   components: {
     HistoryTimeline,
-    BookReturnList,
+    BookList,
   },
   props: {
     history: {
@@ -36,8 +42,11 @@ export default {
       type: Array,
       required: true,
     },
+    userBooks: {
+      type: Array,
+      required: true,
+    },
     user: {
-      type: Object,
       required: true,
     },
   },

@@ -1,6 +1,10 @@
 <template>
   <v-timeline align-top dense>
-    <v-timeline-item v-for="historyRow in history" :key="historyRow.time" :color="typeToColor(historyRow.type)" small>
+    <v-timeline-item v-for="historyRow in history.slice(0, 10)"
+                     :key="historyRow.time"
+                     :color="typeToColor(historyRow.type)"
+                     small
+    >
       <div>
         <div class="font-weight-normal">
           <strong>{{ historyRow.type|typeToHumanString }}</strong> @{{ historyRow.date }}

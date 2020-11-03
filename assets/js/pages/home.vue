@@ -1,20 +1,21 @@
 <template>
-  <v-app>
     <v-container data-app>
       <confirm-dialog :show-dialog="confirmDialog" :text="dialogText" @confirm="confirm"/>
       <book-add-dialog :show-dialog="addDialog" @confirm="confirm"/>
       <v-row>
-        <v-col offset-xl="1" xl="3" lg="4" md="12">
-          <sidebar :history="history"
-                   :books="books.filter((book) => book.renter === 'Jan Kowalski')"
-                   @return="showConfirmDialog" :user="user"/>
+        <v-col offset-xl="1" xl="3" lg="4" cols="12">
+          <sidebar :history="history.filter((historyRow) => historyRow.user && historyRow.user.id === userProfile.id)"
+                   :books="books.filter((book) => book.renter && book.renter.id === userProfile.id)"
+                   :user-books="books.filter((book) => book.owner.id === userProfile.id)"
+                   @return="showConfirmDialog" :user="userProfile"/>
         </v-col>
-        <v-col xl="7" lg="8" md="12">
-          <book-table :books="books" @confirm-dialog="showConfirmDialog" @add-dialog="showAddDialog"/>
+        <v-col xl="7" lg="8" cols="12" order="first" order-lg="last">
+          <book-table :books="books" :user="userProfile"
+                      @confirm-dialog="showConfirmDialog"
+                      @add-dialog="showAddDialog"/>
         </v-col>
       </v-row>
     </v-container>
-  </v-app>
 </template>
 
 <script>
@@ -23,6 +24,8 @@ import Sidebar from '@/Components/sidebar';
 import ConfirmDialog from '@/Components/confirm-dialog';
 import {ACTIONS} from '@/variables';
 import BookAddDialog from '@/Components/book/book-add-dialog';
+import {db, Timestamp} from '@/db';
+import {mapState} from 'vuex';
 
 export default {
   name: 'Home',
@@ -31,6 +34,10 @@ export default {
     ConfirmDialog,
     Sidebar,
     BookTable,
+  },
+  firestore: {
+    books: db.collection('books'),
+    history: db.collection('history').orderBy('timestamp', 'desc'),
   },
   methods: {
     showConfirmDialog(item, action) {
@@ -69,33 +76,65 @@ export default {
       }
     },
     rentBook() {
-      this.books[this.editedIndex].renter = 'Jan Kowalski';
-      this.books[this.editedIndex].rentDate = '31-10-2020';
+      this.books[this.editedIndex].renter = this.userProfile;
+      this.books[this.editedIndex].rentDate = Timestamp.now();
+      db.collection('books')
+          .doc(this.books[this.editedIndex].id)
+          .set(this.books[this.editedIndex])
+          .then(() => {
+            console.log('book rented!');
+          });
       this.pushToHistory(ACTIONS.RENT);
     },
     deleteBook() {
+      db.collection('books')
+          .doc(this.books[this.editedIndex].id)
+          .delete()
+          .then(() => {
+            console.log('book deleted!');
+          });
       this.pushToHistory(ACTIONS.DELETE, this.books[this.editedIndex].name);
-      this.books.splice(this.editedIndex, 1);
     },
     returnBook() {
       this.books[this.editedIndex].renter = null;
       this.books[this.editedIndex].rentDate = null;
+      db.collection('books')
+          .doc(this.books[this.editedIndex].id)
+          .set(this.books[this.editedIndex])
+          .then(() => {
+            console.log('book returned!');
+          });
       this.pushToHistory(ACTIONS.RETURN);
     },
     reserveBook() {
-      this.books[this.editedIndex].renter = 'Reserve';
+      db.collection('books')
+          .doc(this.books[this.editedIndex].id)
+          .set({
+            ...this.books[this.editedIndex],
+            status: 'Reserve',
+            reservedBy: this.userProfile,
+          })
+          .then(() => {
+            console.log('book reserved!');
+          });
       this.pushToHistory(ACTIONS.RESERVE);
     },
     addBook(book) {
-      this.books.push(book);
+      db.collection('books').add({
+        ...book,
+        owner: this.userProfile,
+        status: 'free',
+      });
       this.pushToHistory(ACTIONS.ADD, book.name);
     },
     pushToHistory(type, bookName = null) {
-      this.history.unshift({
+      const historyRow = {
+        user: this.userProfile,
         type: type,
         bookName: bookName ? bookName : this.books[this.editedIndex].name,
-        date: '15-12-2020',
-      });
+        timestamp: Timestamp.now(),
+      };
+      db.collection('history').add(historyRow);
     },
     typeToHumanString(type) {
       switch (type) {
@@ -110,91 +149,17 @@ export default {
       }
     },
   },
+  computed: {
+    ...mapState(['userProfile']),
+  },
   data() {
     return {
       confirmDialog: false,
       addDialog: false,
       dialogText: '',
-      user: {
-        name: 'Jan Kowalski',
-      },
-      books: [
-        {
-          name: 'Wzorce projektowe',
-          owner: 'Jan Kowalski',
-          renter: 'Jan Kowalski',
-          rentDate: '30-10-2020',
-        },
-        {
-          name: 'Docker',
-          owner: 'Tech',
-          renter: 'Jan Kowalski',
-          rentDate: '30-10-2020',
-        },
-        {
-          name: 'Czysta architektura',
-          owner: 'Tech',
-          renter: null,
-          rentDate: null,
-        },
-        {
-          name: 'MongoDB w akcji',
-          owner: 'Jan Kowalski',
-          renter: null,
-          rentDate: null,
-        },
-        {
-          name: 'Bezpieczeństwo aplikacji mobilnych podręcznik hakera',
-          owner: 'Tech',
-          renter: 'Jan Kowalski',
-          rentDate: '30-10-2020',
-        },
-        {
-          name: 'Cisza w sieci',
-          owner: 'Tech',
-          renter: 'Test Testowy',
-          rentDate: '30-10-2020',
-        },
-        {
-          name: 'Testowanie kodu w praktyce',
-          owner: 'Tech',
-          renter: null,
-          rentDate: null,
-        },
-        {
-          name: 'Agile Przewodnik po zwinnych  metodykach programowania',
-          owner: 'Tech',
-          renter: null,
-          rentDate: null,
-        },
-      ],
-      history: [
-        {
-          type: ACTIONS.DELETE,
-          bookName: 'Testowanie kodu w praktyce',
-          date: '11-11-2020',
-        },
-        {
-          type: ACTIONS.RETURN,
-          bookName: `Cisza w sieci`,
-          date: '31-10-2020',
-        },
-        {
-          type: ACTIONS.RESERVE,
-          bookName: `Czysta architektura.`,
-          date: '31-09-2020',
-        },
-        {
-          type: ACTIONS.RENT,
-          bookName: 'Cisza w sieci',
-          date: '27-09-2020',
-        },
-        {
-          type: ACTIONS.ADD,
-          bookName: 'Testowanie kodu w praktyce',
-          date: '20-09-2020',
-        },
-      ],
+      userBooks: [],
+      books: [],
+      history: [],
     };
   },
 };

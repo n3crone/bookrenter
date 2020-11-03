@@ -13,6 +13,7 @@
     </template>
     <template v-slot:[`item.action`]="{ item }">
       <book-action-cell :item="item"
+                        :user="user"
                         @delete="emitDelete(item)"
                         @return="emitReturn(item)"
                         @reserve="emitReserve(item)"
@@ -40,6 +41,9 @@ export default {
       type: Array,
       required: true,
     },
+    user: {
+      required: true,
+    },
   },
   data() {
     return {
@@ -51,12 +55,12 @@ export default {
         },
         {
           text: 'Właściciel',
-          value: 'owner',
+          value: 'owner.name',
           align: 'center',
         },
         {
           text: 'Wypożyczona przez',
-          value: 'renter',
+          value: 'renter.name',
           align: 'center',
         },
         {
