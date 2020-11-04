@@ -16,7 +16,6 @@
                         :user="user"
                         @delete="emitDelete(item)"
                         @return="emitReturn(item)"
-                        @reserve="emitReserve(item)"
                         @rent="emitRent(item)"
       />
     </template>
@@ -59,11 +58,6 @@ export default {
           align: 'center',
         },
         {
-          text: 'Wypożyczona przez',
-          value: 'renter.name',
-          align: 'center',
-        },
-        {
           value: 'action',
           align: 'right',
           sortable: false,
@@ -80,9 +74,6 @@ export default {
     },
     emitReturn(item) {
       this.$emit('confirm-dialog', item, ACTIONS.RETURN);
-    },
-    emitReserve(item) {
-      this.$emit('confirm-dialog', item, ACTIONS.RESERVE);
     },
     emitAdd() {
       this.$emit('add-dialog', ACTIONS.ADD);

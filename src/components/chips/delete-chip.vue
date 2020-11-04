@@ -1,6 +1,6 @@
 <template>
   <custom-chip @click="click"
-               icon="mdi-trash-can-outline"
+               icon="mdi-book-minus-outline"
                text="Usuń"
                color="red darken-3"/>
 </template>

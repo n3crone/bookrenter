@@ -1,5 +1,5 @@
 <template>
-  <custom-chip @click="click" icon="mdi-keyboard-return" text="Zwróć" color="blue"/>
+  <custom-chip @click="click" icon="mdi-book-check-outline" text="Zwróć" color="blue"/>
 </template>
 
 <script>

@@ -2,12 +2,13 @@
   <v-container data-app>
     <confirm-dialog :show-dialog="confirmDialog" :text="dialogText" @confirm="confirm"/>
     <book-add-dialog :show-dialog="addDialog" @confirm="confirm"/>
+    <v-row class="text-h2 justify-center">📚 BookRenter</v-row>
     <v-row>
       <v-col offset-xl="1" xl="3" lg="4" cols="12">
         <sidebar :history="history.filter((historyRow) => historyRow.user && historyRow.user.id === userProfile.id)"
                  :books="books.filter((book) => book.renter && book.renter.id === userProfile.id)"
                  :user-books="books.filter((book) => book.owner.id === userProfile.id)"
-                 @return="showConfirmDialog" :user="userProfile"/>
+                 @click="showConfirmDialog" :user="userProfile"/>
       </v-col>
       <v-col xl="7" lg="8" cols="12" order="first" order-lg="last">
         <book-table :books="books" :user="userProfile"
@@ -68,9 +69,6 @@ export default {
         case ACTIONS.DELETE:
           this.deleteBook();
           return;
-        case ACTIONS.RESERVE:
-          this.reserveBook();
-          return;
         case ACTIONS.ADD:
           this.addBook(confirm);
           return;
@@ -108,19 +106,6 @@ export default {
           console.log('book returned!');
         });
       this.pushToHistory(ACTIONS.RETURN);
-    },
-    reserveBook() {
-      db.collection('books')
-        .doc(this.books[this.editedIndex].id)
-        .set({
-          ...this.books[this.editedIndex],
-          status: 'Reserve',
-          reservedBy: this.userProfile,
-        })
-        .then(() => {
-          console.log('book reserved!');
-        });
-      this.pushToHistory(ACTIONS.RESERVE);
     },
     addBook(book) {
       db.collection('books')

@@ -1,5 +1,5 @@
 <template>
-  <custom-chip @click="click" icon="mdi-book-outline" text="Dodaj" color="teal"/>
+  <custom-chip @click="click" icon="mdi-book-plus-outline" text="Dodaj" color="teal"/>
 </template>
 
 <script>

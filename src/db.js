@@ -1,17 +1,9 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import { firebaseConfig } from '@/variables';
 
 require('firebase/auth');
 
-const firebaseConfig = {
-  apiKey: '',
-  authDomain: '',
-  databaseURL: '',
-  projectId: 'bookrenter-166cb',
-  storageBucket: '',
-  messagingSenderId: '',
-  appId: '',
-};
 export const db = firebase
   .initializeApp(firebaseConfig)
   .firestore();

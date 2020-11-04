@@ -4,20 +4,20 @@
       <v-card-title>
         {{ user.name }}
       </v-card-title>
-      <div class="pl-4" v-if="books.length">
-        Wypożyczenia
-      </div>
-      <book-list :books="books" action="return" @return="emitReturn"/>
-      <div class="pl-4" v-if="userBooks.length">
-        Twoje książki
-      </div>
-      <book-list :books="userBooks" action="delete" @return="emitReturn"/>
       <div v-if="history.length">
-        <div class="font-weight-bold ml-6 mb-2 mt-4">
+        <div class="font-weight-bold ml-6 mb-2 mb-4">
           Historia
         </div>
         <history-timeline :history="history"/>
       </div>
+      <div class="font-weight-bold pl-4" v-if="books.length">
+        Wypożyczenia
+      </div>
+      <book-list :books="books" action="return" @click="emitReturn"/>
+      <div class="font-weight-bold pl-4" v-if="userBooks.length">
+        Twoje książki
+      </div>
+      <book-list :books="userBooks" action="delete" @click="emitDelete"/>
     </v-card-text>
   </v-card>
 </template>
@@ -51,8 +51,11 @@ export default {
     },
   },
   methods: {
-    emitReturn(...args) {
-      this.$emit(ACTIONS.RETURN, ...args);
+    emitReturn(book) {
+      this.$emit('click', book, ACTIONS.RETURN);
+    },
+    emitDelete(book) {
+      this.$emit('click', book, ACTIONS.DELETE);
     },
   },
 };

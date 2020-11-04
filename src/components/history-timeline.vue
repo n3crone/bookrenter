@@ -1,6 +1,6 @@
 <template>
   <v-timeline align-top dense>
-    <v-timeline-item v-for="historyRow in history.slice(0, 10)"
+    <v-timeline-item v-for="historyRow in history.slice(0, 5)"
                      :key="historyRow.time"
                      :color="typeToColor(historyRow.type)"
                      small
@@ -9,7 +9,7 @@
         <div class="font-weight-normal">
           <strong>{{ historyRow.type|typeToHumanString }}</strong> @{{ historyRow.date }}
         </div>
-        <div>{{ historyRow.bookName }}</div>
+        <v-list-item-subtitle>{{ historyRow.bookName }}</v-list-item-subtitle>
       </div>
     </v-timeline-item>
   </v-timeline>

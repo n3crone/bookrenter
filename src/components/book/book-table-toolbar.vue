@@ -1,14 +1,14 @@
 <template>
   <v-toolbar flat>
     <div>
-      <div class="text-caption">
-        {{ books.length }} książek w katalogu
+      <div class="text-subtitle-2">
+        📚 {{ books.length }} Książek
       </div>
-      <div class="text-caption">
-        {{ books.filter((book) => book.renter === null).length }} dostępnych
+      <div class="text-subtitle-2">
+        📗 {{ books.filter((book) => book.renter === null).length }} Dostępnych
       </div>
-      <div class="text-caption">
-        {{ books.filter((book) => book.renter !== null).length }} wypożyczonych
+      <div class="text-subtitle-2">
+        📕 {{ books.filter((book) => book.renter !== null).length }} Wypożyczonych
       </div>
     </div>
     <v-spacer></v-spacer>

@@ -1,5 +1,5 @@
 <template>
-  <custom-chip @click="click" icon="mdi-book-plus" text="Wypożycz"/>
+  <custom-chip @click="click" icon="mdi-book-account-outline" text="Wypożycz"/>
 </template>
 
 <script>
