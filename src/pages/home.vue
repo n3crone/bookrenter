@@ -16,6 +16,7 @@
                     @add-dialog="showAddDialog"/>
       </v-col>
     </v-row>
+    <v-snackbar v-model="snackbar">{{ snackbarText }}</v-snackbar>
   </v-container>
 </template>
 
@@ -83,7 +84,8 @@ export default {
         .doc(this.books[this.editedIndex].id)
         .set(this.books[this.editedIndex])
         .then(() => {
-          console.log('book rented!');
+          this.snackbar = true;
+          this.snackbarText = `Wypożyczono książkę "${this.books[this.editedIndex].name}"`;
         });
       this.pushToHistory(ACTIONS.RENT);
     },
@@ -92,7 +94,8 @@ export default {
         .doc(this.books[this.editedIndex].id)
         .delete()
         .then(() => {
-          console.log('book deleted!');
+          this.snackbar = true;
+          this.snackbarText = `Usunięto książkę "${this.books[this.editedIndex].name}"`;
         });
       this.pushToHistory(ACTIONS.DELETE, this.books[this.editedIndex].name);
     },
@@ -103,17 +106,14 @@ export default {
         .doc(this.books[this.editedIndex].id)
         .set(this.books[this.editedIndex])
         .then(() => {
-          console.log('book returned!');
+          this.snackbar = true;
+          this.snackbarText = `Oddano książkę "${this.books[this.editedIndex].name}"`;
         });
       this.pushToHistory(ACTIONS.RETURN);
     },
     addBook(book) {
       db.collection('books')
-        .add({
-          ...book,
-          owner: this.userProfile,
-          status: 'free',
-        });
+        .add({ ...book, owner: this.userProfile, status: 'free' });
       this.pushToHistory(ACTIONS.ADD, book.name);
     },
     pushToHistory(type, bookName = null) {
@@ -146,6 +146,8 @@ export default {
   },
   data() {
     return {
+      snackbar: false,
+      snackbarText: null,
       confirmDialog: false,
       addDialog: false,
       dialogText: '',
