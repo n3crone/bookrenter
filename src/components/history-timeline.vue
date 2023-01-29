@@ -7,7 +7,7 @@
     >
       <div>
         <div class="font-weight-normal">
-          <strong>{{ historyRow.type|typeToHumanString }}</strong> @{{ historyRow.date }}
+          <strong>{{ historyRow.type|typeToHumanString }}</strong> @ {{ getDate(historyRow.timestamp.seconds) }}
         </div>
         <v-list-item-subtitle>{{ historyRow.bookName }}</v-list-item-subtitle>
       </div>
@@ -17,6 +17,7 @@
 
 <script>
 import { ACTIONS } from '@/variables';
+import dayjs from 'dayjs';
 
 export default {
   name: 'HistoryTimeline',
@@ -27,6 +28,9 @@ export default {
     },
   },
   methods: {
+    getDate(seconds) {
+      return dayjs.unix(seconds).format('DD-MM-YYYY HH:mm');
+    },
     typeToColor(type) {
       switch (type) {
         case ACTIONS.ADD:

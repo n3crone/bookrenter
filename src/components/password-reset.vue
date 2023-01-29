@@ -1,16 +1,19 @@
 <template>
-  <div class="modal">
-    <v-icon @click="$emit('close')" class="close">mdi-close</v-icon>
+  <div class="modal col-12">
     <div class="modal-content text-center">
       <h3>Zresetuj hasło</h3>
       <div v-if="!showSuccess">
         <form @submit.prevent>
-          <v-text-field v-model.trim="email" type="email" placeholder="Email"/>
+          <v-text-field v-model.trim="email" type="email" placeholder="Email" outlined dense/>
         </form>
         <p v-if="errorMsg !== ''" class="error">{{ errorMsg }}</p>
-        <v-btn @click="resetPassword()" class="button">Reset</v-btn>
+        <v-btn @click="resetPassword()" small color="primary">Resetuj</v-btn>
+        <v-btn @click="$emit('close')" small text>zamknij</v-btn>
       </div>
-      <p v-else>Success! Check your email for a reset link.</p>
+      <p v-else>
+        Email z resetem hasła wysłany.<br/>
+        <v-btn @click="$emit('close')" small text>zamknij</v-btn>
+      </p>
     </div>
   </div>
 </template>

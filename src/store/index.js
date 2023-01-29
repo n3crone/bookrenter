@@ -32,6 +32,7 @@ const store = new Vuex.Store({
         .set({
           id: user.uid,
           name: form.name,
+          department: form.department,
         });
       dispatch('fetchUserProfile', user);
     },

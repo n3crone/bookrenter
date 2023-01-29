@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@mdi/font": "^5.8.55",
+    "dayjs": "^1.11.7",
     "firebase": "^8.0.0",
     "firebase-tools": "^8.14.1",
     "vue": "^2.5.2",
@@ -39,7 +40,6 @@
     "babel-preset-stage-2": "^6.22.0",
     "babel-register": "^6.22.0",
     "chalk": "^2.0.1",
-    "chromedriver": "^2.27.2",
     "copy-webpack-plugin": "^4.0.1",
     "cross-spawn": "^5.0.1",
     "css-loader": "^0.28.0",

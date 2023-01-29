@@ -2,6 +2,20 @@
 
 > A Vue.js project
 
+Create .src/firebase.js with firebase config f.e.:
+```js
+export const firebaseConfig = {
+  apiKey: '',
+  authDomain: '',
+  projectId: '',
+  storageBucket: '',
+  messagingSenderId,
+  appId: '',
+  measurementId: '',
+};
+```
+Change project name in `.firebasrc` to match with config.
+
 ## Build Setup
 
 ``` bash

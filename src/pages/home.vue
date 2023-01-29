@@ -2,7 +2,7 @@
   <v-container data-app>
     <confirm-dialog :show-dialog="confirmDialog" :text="dialogText" @confirm="confirm"/>
     <book-add-dialog :show-dialog="addDialog" @confirm="confirm"/>
-    <v-row class="text-h2 justify-center">📚 BookRenter</v-row>
+    <h2 class="text-center">📚 BookRenter</h2>
     <v-row>
       <v-col offset-xl="1" xl="3" lg="4" cols="12">
         <sidebar :history="history.filter((historyRow) => historyRow.user && historyRow.user.id === userProfile.id)"

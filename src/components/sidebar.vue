@@ -1,8 +1,12 @@
 <template>
   <v-card>
     <v-card-text>
-      <v-card-title>
-        {{ user.name }}
+      <v-card-title class="d-flex justify-space-between align-center">
+        <div>
+        <div>{{ user.name }}</div>
+        <div class="text-body-2">{{ user.department }}</div>
+        </div>
+        <custom-chip icon="mdi-logout" text="Wyloguj" @click="logout" color="teal" />
       </v-card-title>
       <div v-if="history.length">
         <div class="font-weight-bold ml-6 mb-2 mb-4">
@@ -26,10 +30,14 @@
 import BookList from '@/components/book/book-list';
 import { ACTIONS } from '@/variables';
 import HistoryTimeline from '@/components/history-timeline';
+import AddChip from './chips/add-chip';
+import CustomChip from './chips/custom-chip';
 
 export default {
   name: 'Sidebar',
   components: {
+    CustomChip,
+    AddChip,
     HistoryTimeline,
     BookList,
   },
@@ -51,6 +59,9 @@ export default {
     },
   },
   methods: {
+    logout() {
+      this.$store.dispatch('logout');
+    },
     emitReturn(book) {
       this.$emit('click', book, ACTIONS.RETURN);
     },
