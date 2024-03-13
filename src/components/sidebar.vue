@@ -1,12 +1,14 @@
 <template>
-  <v-card>
+  <v-container>
     <v-card-text>
       <v-card-title class="d-flex justify-space-between align-center">
         <div>
-        <div>{{ user.name }}</div>
-        <div class="text-body-2">{{ user.department }}</div>
+        <div>{{ user.displayName }}</div>
         </div>
-        <custom-chip icon="mdi-logout" text="Wyloguj" @click="logout" color="teal" />
+        <v-btn @click="logout" text>
+          <v-icon>mdi-power</v-icon>
+          Wyloguj
+        </v-btn>
       </v-card-title>
       <div v-if="history.length">
         <div class="font-weight-bold ml-6 mb-2 mb-4">
@@ -23,7 +25,7 @@
       </div>
       <book-list :books="userBooks" action="delete" @click="emitDelete"/>
     </v-card-text>
-  </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -60,6 +62,7 @@ export default {
   },
   methods: {
     logout() {
+      this.$analytics.logEvent('logoutClick');
       this.$store.dispatch('logout');
     },
     emitReturn(book) {

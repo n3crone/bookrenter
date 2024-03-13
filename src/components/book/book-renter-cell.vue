@@ -1,12 +1,5 @@
 <template>
-  <v-tooltip v-if="item.renter" top>
-    <template v-slot:activator="{ on, attrs }">
-      <div class="blue-grey--text" v-bind="attrs" v-on="on">
-        {{ item.renter }}
-      </div>
-    </template>
-    <span>{{ item.rentDate }}</span>
-  </v-tooltip>
+  <div v-if="item.renter">{{ item.rentDate }}</div>
   <div v-else class="teal--text">-</div>
 </template>
 

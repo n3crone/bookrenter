@@ -1,23 +1,30 @@
 <template>
-  <v-container data-app>
-    <confirm-dialog :show-dialog="confirmDialog" :text="dialogText" @confirm="confirm"/>
-    <book-add-dialog :show-dialog="addDialog" @confirm="confirm"/>
-    <h2 class="text-center">📚 BookRenter</h2>
-    <v-row>
-      <v-col offset-xl="1" xl="3" lg="4" cols="12">
+    <v-container data-app>
+      <v-navigation-drawer v-model="drawer" absolute temporary width="400" right>
         <sidebar :history="history.filter((historyRow) => historyRow.user && historyRow.user.id === userProfile.id)"
                  :books="books.filter((book) => book.renter && book.renter.id === userProfile.id)"
                  :user-books="books.filter((book) => book.owner.id === userProfile.id)"
                  @click="showConfirmDialog" :user="userProfile"/>
-      </v-col>
-      <v-col xl="7" lg="8" cols="12" order="first" order-lg="last">
-        <book-table :books="books" :user="userProfile"
-                    @confirm-dialog="showConfirmDialog"
-                    @add-dialog="showAddDialog"/>
-      </v-col>
-    </v-row>
-    <v-snackbar v-model="snackbar">{{ snackbarText }}</v-snackbar>
-  </v-container>
+      </v-navigation-drawer>
+      <confirm-dialog :show-dialog="confirmDialog" :text="dialogText" @confirm="confirm"
+                      :confirm-color="confirmColor" :confirm-text="confirmText"/>
+      <book-add-dialog :show-dialog="addDialog" @confirm="confirm"/>
+      <div class="d-flex justify-space-between mb-3">
+        <img src="/static/logo.png" alt="logo" width="235px"/>
+        <v-btn outlined dark @click.stop="drawer = !drawer" color="black">
+          {{ userProfile.displayName }}
+          <v-icon class="ml-3">mdi-account</v-icon>
+        </v-btn>
+      </div>
+      <v-row>
+        <v-col>
+          <book-table :books="books" :user="userProfile"
+                      @confirm-dialog="showConfirmDialog"
+                      @add-dialog="showAddDialog"/>
+        </v-col>
+      </v-row>
+      <v-snackbar v-model="snackbar">{{ snackbarText }}</v-snackbar>
+    </v-container>
 </template>
 
 <script>
@@ -44,16 +51,22 @@ export default {
   },
   methods: {
     showConfirmDialog(item, action) {
-      this.dialogText = `📚 Chcesz ${this.typeToHumanString(action)} '${item.name}'?`;
+      this.dialogText = `<div>Potwierdź ${this.typeToHumanString(action)} '<b>${item.name}</b>'?</div>`;
       this.editedIndex = this.books.indexOf(item);
       this.confirmDialog = true;
       this.confirmAction = action;
     },
     showAddDialog() {
+      this.$analytics.logEvent('newBookModalClick');
       this.addDialog = true;
       this.confirmAction = ACTIONS.ADD;
     },
     confirm(confirm) {
+      this.$analytics.logEvent(this.confirmAction, {
+        bookName: this.editedIndex >= 0 ? this.books[this.editedIndex].name : confirm.name,
+        bookId: this.editedIndex >= 0 ? this.books[this.editedIndex].name : 'not-persisted',
+        confirm: !!confirm,
+      });
       this.confirmDialog = false;
       this.addDialog = false;
       if (!confirm) {
@@ -107,7 +120,7 @@ export default {
         .set(this.books[this.editedIndex])
         .then(() => {
           this.snackbar = true;
-          this.snackbarText = `Oddano książkę "${this.books[this.editedIndex].name}"`;
+          this.snackbarText = `Zwrócono książkę "${this.books[this.editedIndex].name}"`;
         });
       this.pushToHistory(ACTIONS.RETURN);
     },
@@ -129,13 +142,21 @@ export default {
     typeToHumanString(type) {
       switch (type) {
         case ACTIONS.RETURN:
-          return 'zwrócić';
+          this.confirmColor = 'warning';
+          this.confirmText = 'Zwróć';
+          return 'zwrot';
         case ACTIONS.DELETE:
-          return 'usunąć';
+          this.confirmColor = 'error';
+          this.confirmText = 'Usuń';
+          return 'usunięcie';
         case ACTIONS.RESERVE:
-          return 'zarezerować';
+          this.confirmColor = 'info';
+          this.confirmText = 'Rezerwuj';
+          return 'rezerwację';
         case ACTIONS.RENT:
-          return 'wypożyczyć';
+          this.confirmColor = 'success';
+          this.confirmText = 'Wypożycz';
+          return 'wypożyczenie';
         default:
           throw new Error('Unknown type');
       }
@@ -154,6 +175,7 @@ export default {
       userBooks: [],
       books: [],
       history: [],
+      drawer: null,
     };
   },
 };

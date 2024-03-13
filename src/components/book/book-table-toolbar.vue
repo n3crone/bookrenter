@@ -1,15 +1,9 @@
 <template>
-  <v-toolbar flat>
+  <v-toolbar flat height="32px">
     <div>
-      <div class="text-subtitle-2">
-        📚 {{ books.length }} Książek
-      </div>
-      <div class="text-subtitle-2">
-        📗 {{ books.filter((book) => book.renter === null).length }} Dostępnych
-      </div>
-      <div class="text-subtitle-2">
-        📕 {{ books.filter((book) => book.renter !== null).length }} Wypożyczonych
-      </div>
+        <custom-chip :text="`${books.length} Książek`" color="info" />
+        <custom-chip :text="`${books.filter(book => book.renter === null).length} Dostępnych`" color="success"/>
+        <custom-chip :text="`${books.filter(book => book.renter !== null).length} Wypożyczonych`" color="warning"/>
     </div>
     <v-spacer></v-spacer>
     <add-chip @click="addClick"/>
@@ -18,11 +12,13 @@
 
 <script>
 import AddChip from '@/components/chips/add-chip';
+import CustomChip from '@/components/chips/custom-chip';
 import { ACTIONS } from '@/variables';
 
 export default {
   name: 'BookTableToolbar',
   components: {
+    CustomChip,
     AddChip,
   },
   props: {
@@ -39,6 +35,9 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style>
+.v-toolbar__content {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
 </style>

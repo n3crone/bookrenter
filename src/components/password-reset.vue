@@ -7,7 +7,7 @@
           <v-text-field v-model.trim="email" type="email" placeholder="Email" outlined dense/>
         </form>
         <p v-if="errorMsg !== ''" class="error">{{ errorMsg }}</p>
-        <v-btn @click="resetPassword()" small color="primary">Resetuj</v-btn>
+        <v-btn @click="resetPassword()" small color="secondary">Resetuj</v-btn>
         <v-btn @click="$emit('close')" small text>zamknij</v-btn>
       </div>
       <p v-else>

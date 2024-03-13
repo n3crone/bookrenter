@@ -1,8 +1,5 @@
 <template>
-  <custom-chip @click="click"
-               icon="mdi-book-minus-outline"
-               text="Usuń"
-               color="red darken-3"/>
+  <custom-chip @click="click" text="Usuń" color="error"/>
 </template>
 
 <script>

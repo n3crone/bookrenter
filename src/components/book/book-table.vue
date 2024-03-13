@@ -2,7 +2,6 @@
   <v-data-table :headers="headers"
                 :items="filteredBooks"
                 :items-per-page="50"
-                class="elevation-1"
                 dense
                 show-expand
                 :search="search"
@@ -12,7 +11,7 @@
   >
     <template v-slot:top>
       <book-table-toolbar :books="filteredBooks" @add="emitAdd"/>
-      <v-row class="pl-3 pr-3 pt-5">
+      <v-row class="pt-3 pb-3">
         <v-col cols="12" sm="6">
           <v-text-field
               v-model="search"
@@ -38,7 +37,9 @@
     </template>
     <template v-slot:expanded-item="{ headers, item }">
       <td :colspan="headers.length" class="pt-2 pb-2 text-break">
-        <div v-if="item.link">Link: <a :href="item.link" target="_blank">{{ item.link }}</a></div>
+        <div v-if="item.link">
+            Link: <a @click="download(item)">{{ item.link }}</a>
+        </div>
         {{ item.description || 'Brak opisu.' }}
       </td>
     </template>
@@ -81,7 +82,7 @@ export default {
   },
   computed: {
     filteredBooks() {
-      return this.books.filter(book => this.selectedDepartments.includes(book.owner.department));
+      return this.books.filter(book => this.selectedDepartments.includes(book.department));
     },
   },
   data() {
@@ -96,14 +97,14 @@ export default {
           value: 'name',
         },
         {
-          text: 'Właściciel',
-          value: 'owner.name',
+          text: 'Dział',
+          value: 'department',
           align: 'center',
           filterable: false,
         },
         {
-          text: 'Dział',
-          value: 'owner.department',
+          text: 'Wypożyczył',
+          value: 'renter.displayName',
           align: 'center',
           filterable: false,
         },
@@ -117,6 +118,13 @@ export default {
     };
   },
   methods: {
+    download(item) {
+      this.$analytics.logEvent('download', {
+        bookName: item.name,
+        bookId: this.item.id,
+      });
+      window.open(item.link, '_blank').focus();
+    },
     emitRent(item) {
       this.$emit('confirm-dialog', item, ACTIONS.RENT);
     },

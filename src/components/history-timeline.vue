@@ -34,15 +34,15 @@ export default {
     typeToColor(type) {
       switch (type) {
         case ACTIONS.ADD:
-          return 'teal';
+          return 'info';
         case ACTIONS.RETURN:
-          return 'blue';
+          return 'warning';
         case ACTIONS.DELETE:
-          return 'red darken-3';
+          return 'error';
         case ACTIONS.RESERVE:
-          return 'blue-grey';
+          return 'secondary';
         case ACTIONS.RENT:
-          return 'green';
+          return 'warning';
         default:
           throw new Error('Unknown type');
       }

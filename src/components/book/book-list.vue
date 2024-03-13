@@ -6,7 +6,7 @@
           <return-chip v-if="action === 'return'" @click="emitClick(book)"/>
           <delete-chip v-else-if="action === 'delete' && !book.renter" @click="emitClick(book)"/>
           <v-chip v-else color="black" outlined small>
-            {{ book.renter.name }}
+            {{ book.renter.displayName }}
           </v-chip>
           {{ book.name }}
         </v-list-item-subtitle>

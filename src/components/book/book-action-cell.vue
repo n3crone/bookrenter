@@ -1,17 +1,12 @@
 <template>
   <div>
-    <delete-chip class="ma-1" v-if="item.owner.id === user.id && !item.renter" @click="deleteClick"/>
-    <custom-chip v-if="item.type === BOOK_TYPES.EBOOK" text="Pobierz" color="teal" icon="mdi-download"
-                 @click="download"/>
+    <delete-chip v-if="item.owner.id === user.id && !item.renter" @click="deleteClick"/>
+    <custom-chip v-if="item.type === BOOK_TYPES.EBOOK" text="Pobierz" color="info"
+                 @click="download" />
     <return-chip v-else-if="item.renter && item.renter.id === user.id" @click="returnClick"/>
-    <v-tooltip v-else-if="item.renter" top>
-      <template v-slot:activator="{ on, attrs }">
-        <v-chip color="black" outlined small v-bind="attrs" v-on="on">
-          {{ getDate(item.rentDate) }}
-        </v-chip>
-      </template>
-      <span>{{ item.renter.name }}</span>
-    </v-tooltip>
+    <v-chip v-else-if="item.renter" color="light-grey" small>
+      {{ getDate(item.rentDate) }}
+    </v-chip>
     <rent-chip v-else @click="rentClick"/>
   </div>
 </template>
@@ -55,6 +50,10 @@ export default {
       return dayjs.unix(timestamp.seconds).format('DD-MM-YYYY');
     },
     download() {
+      this.$analytics.logEvent('download', {
+        bookName: this.item.name,
+        bookId: this.item.id,
+      });
       window.open(this.item.link, '_blank').focus();
     },
     deleteClick() {
@@ -72,7 +71,15 @@ export default {
 
 <style scoped>
 .v-chip {
-  width: 110px;
+  width: 100px;
   justify-content: center;
 }
+.v-chip:not(.v-chip--outlined).grey {
+   color: black;
+}
+.v-chip {
+  font-weight: bold;
+  border-radius: 7px;
+}
 </style>
+

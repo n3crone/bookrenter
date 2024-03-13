@@ -8,12 +8,13 @@
         <v-container>
           <v-row>
             <v-col cols="12">
-              <v-text-field v-model="newBook.name" label="Tytuł publikacji" outlined dense/>
-              <v-select v-model="newBook.type" :items="Object.values(bookTypes)" label="Forma publikacji" outlined
+              <v-text-field v-model="newBook.name" label="Tytuł" outlined dense/>
+              <v-select v-model="newBook.department" :items="Object.values(departments)" label="Dział" outlined dense />
+              <v-select v-model="newBook.type" :items="Object.values(bookTypes)" label="Typ" outlined
                         dense/>
               <v-text-field v-if="newBook.type === bookTypes.EBOOK" v-model="newBook.link"
-                            label="Link do publikacji" outlined dense/>
-              <v-textarea v-model="newBook.description" label="Opis publikacji" rows="2" outlined dense/>
+                            label="Link" outlined dense/>
+              <v-textarea v-model="newBook.description" label="Opis" rows="2" outlined dense/>
             </v-col>
           </v-row>
         </v-container>
@@ -32,7 +33,7 @@
 </template>
 
 <script>
-import { BOOK_TYPES } from '../../variables';
+import { BOOK_TYPES, DEPARTMENTS } from '@/variables';
 
 export default {
   name: 'BookAddDialog',
@@ -45,6 +46,7 @@ export default {
   data: () => ({
     bookTypes: BOOK_TYPES,
     dialog: false,
+    departments: DEPARTMENTS,
     newBook: {
       name: null,
       renter: null,

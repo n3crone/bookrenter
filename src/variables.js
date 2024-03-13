@@ -8,8 +8,11 @@ export const ACTIONS = {
 
 export const DEPARTMENTS = {
   TECHNOLOGY: 'Technologiczny',
+  AML: 'AML',
+  SEO: 'SEO',
+  KIK: 'Kontent i Komunikacja',
   PRODUCT: 'Produktu',
-  CUSTOMER_SERVICE: 'Customer Service',
+  DATA_FINANCE_DEPARTMENT: 'Data Finance Department',
 };
 
 export const BOOK_TYPES = {

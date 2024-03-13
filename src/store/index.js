@@ -22,24 +22,15 @@ const store = new Vuex.Store({
     },
   },
   actions: {
-    async login({ dispatch }, form) {
-      const { user } = await fb.auth.signInWithEmailAndPassword(form.email, form.password);
-      dispatch('fetchUserProfile', user);
-    },
-    async signup({ dispatch }, form) {
-      const { user } = await fb.auth.createUserWithEmailAndPassword(form.email, form.password);
-      await fb.usersCollection.doc(user.uid)
-        .set({
-          id: user.uid,
-          name: form.name,
-          department: form.department,
-        });
+    async googleLogin({ dispatch }) {
+      const { user } = await fb.auth.signInWithPopup(fb.provider);
       dispatch('fetchUserProfile', user);
     },
     async fetchUserProfile({ commit }, user) {
-      const userProfile = await fb.usersCollection.doc(user.uid)
-        .get();
-      commit('setUserProfile', userProfile.data());
+      commit('setUserProfile', {
+        id: user.uid,
+        displayName: user.displayName,
+      });
       if (router.currentRoute.path === '/login') {
         await router.push('/');
       }
